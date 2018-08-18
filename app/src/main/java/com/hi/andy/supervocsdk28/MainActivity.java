@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 
 Timer timerExit = new Timer();
+int test;
 
 TimerTask task = new TimerTask() {
 
