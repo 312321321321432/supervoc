@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -107,7 +109,6 @@ TimerTask task = new TimerTask() {
             viewPager.addOnPageChangeListener(this);
             navigation = (BottomNavigationView) findViewById(R.id.navigation);
             navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
             viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
                 @Override
                 public Fragment getItem(int position) {
@@ -169,11 +170,9 @@ TimerTask task = new TimerTask() {
                     case 2://other
 
                     case 3://settings
-
                 }
                 return true;
             }
-
         };
 
         @Override
@@ -208,7 +207,6 @@ TimerTask task = new TimerTask() {
                 case 2://other
 
                 case 3://settings
-
             }
         }
 
@@ -390,8 +388,8 @@ TimerTask task = new TimerTask() {
          }
       }
             return false;
-
  }
+
 }
 /*
 尚未做的事：
