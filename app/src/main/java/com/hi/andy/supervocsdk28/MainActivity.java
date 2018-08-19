@@ -31,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import es.dmoral.toasty.Toasty;
 //other = more
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener {
@@ -250,14 +251,15 @@ TimerTask task = new TimerTask() {
             TextInputLayout Ie_v = (TextInputLayout) findViewById(R.id.IE_v);
             TextInputLayout Ic_v = (TextInputLayout) findViewById(R.id.IC_v);
 
-
             EditText IEnglish = (EditText) findViewById(R.id.IEnglish);
             EditText IChinese = (EditText) findViewById(R.id.IChinese);
             EditText Ihint = (EditText) findViewById(R.id.Ihint);
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
             if(IEnglish.length() == 0 && IChinese.length() == 0) {
-                Toast.makeText(this, R.string.kidding, Toast.LENGTH_SHORT).show();
+                Toasty.error(this, "R.string.kidding???", Toast.LENGTH_SHORT, true).show();
+                Ic_v.setError("");
+                Ie_v.setError("");
                 noer += 1;
             }
             else if (IEnglish.length() == 0) {
