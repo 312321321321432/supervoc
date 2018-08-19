@@ -3,6 +3,8 @@ package com.hi.andy.supervocsdk28;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -29,26 +31,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
+//other = more
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener {
 
         private static Boolean isExit = false;
         private static Boolean hasTask = false;
-        int vislist = 0;
 
-
+    String appVersion;
 Timer timerExit = new Timer();
-
 TimerTask task = new TimerTask() {
-
      @Override
-
      public void run() {
-
         isExit = false;
-         hasTask = true;
-
+        hasTask = true;
     }
 };
         static final String db_name = "VOC";
@@ -67,11 +63,11 @@ TimerTask task = new TimerTask() {
         switch (item.getItemId()){
             case R.id.default_value:
                 return true;
-            case R.id.information:
+            case R.id.about:
                 new AlertDialog.Builder(this)
-                        .setMessage("hi")
-                        .setTitle("hi")
-                        .setPositiveButton("OK", this)
+                        .setMessage( "v" + appVersion)
+                        .setTitle(R.string.about_app)
+                        .setPositiveButton(R.string.ok, this)
                         .show();
                 return true;
         }
@@ -87,6 +83,15 @@ TimerTask task = new TimerTask() {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            //vercode
+            PackageManager manager = this.getPackageManager();
+            try { PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+                appVersion = info.versionName; //版本名
+            } catch (PackageManager.NameNotFoundException e) {
+            // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+//varcode
             //db
             db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
             String createTable = "CREATE TABLE IF NOT EXISTS " + tb_name + "(eng VARCHAR(64)," + "chn VARCHAR(32)," + "hint VARCHAR(16))";
@@ -137,7 +142,7 @@ TimerTask task = new TimerTask() {
 
                 switch (item.getOrder()) {
                     case 0://edit
-                        vislist =0;
+
                     case 1://all
 
                         c = db.rawQuery("SELECT * FROM " + tb_name, null);
@@ -158,12 +163,9 @@ TimerTask task = new TimerTask() {
                             allC.setText("---");
                         }
 
-           vislist = 1;
                     case 2://other
 
-                       vislist = 2;
                     case 3://settings
-                        vislist = 3;
 
                 }
                 return true;
@@ -180,7 +182,7 @@ TimerTask task = new TimerTask() {
             TextView allh = (TextView) findViewById(R.id.allh);
             switch (position) {
                 case 0://edit
-                    vislist = 0;
+
                 case 1://all
 
                     c = db.rawQuery("SELECT * FROM " + tb_name, null);
@@ -200,13 +202,10 @@ TimerTask task = new TimerTask() {
                     } else {
                         allC.setText("---");
                     }
-                    vislist = 1;
                 case 2://other
 
-                    vislist = 2;
                 case 3://settings
 
-                    vislist = 3;
             }
         }
 
@@ -226,6 +225,24 @@ TimerTask task = new TimerTask() {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+    public boolean onPrepareOptionsMenu(Menu menu){
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        switch (viewPager.getCurrentItem()){
+            case 0://edit
+                menu.findItem(R.id.default_value).setVisible(false);
+                break;
+            case 1://all
+                menu.findItem(R.id.default_value).setVisible(false);
+                break;
+            case 2://other
+                menu.findItem(R.id.default_value).setVisible(false);
+                break;
+            case 3://settings
+                menu.findItem(R.id.default_value).setVisible(true);
+                break;
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     public void add(View V) {
@@ -349,7 +366,7 @@ TimerTask task = new TimerTask() {
             // 判斷是否按下Back
       if (keyCode == KeyEvent.KEYCODE_BACK) {
                 // 是否要退出
-         if(isExit == false ) {
+         if(!isExit) {
 
                isExit = true; //記錄下一次要退出
 

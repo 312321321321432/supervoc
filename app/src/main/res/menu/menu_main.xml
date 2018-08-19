@@ -6,11 +6,12 @@
     <item
         android:id="@+id/default_value"
         android:title="@string/use_default_value"
-        android:visible="true"
+        android:orderInCategory="0"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/information"
-        android:title="@string/information"
+        android:id="@+id/about"
+        android:title="@string/about"
         android:visible="true"
+        android:orderInCategory="1"
         app:showAsAction="never"/>
 </menu>

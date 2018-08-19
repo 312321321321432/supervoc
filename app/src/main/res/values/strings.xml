@@ -24,6 +24,7 @@
 ABCDEFGHIJKLMNOPQRSTUVWXYZ`!"$^*()=#[]',./?/*-_+&#060;&#062;&#064;&#038;</string>
     <string name="use_default_value">使用預設值</string>
     <string name="nouse_default_value">此頁面不需使用預設值</string>
-    <string name="information">資訊</string>
+    <string name="about_app">關於此程式</string>
     <string name="ok">OK</string>
+    <string name="about">關於</string>
 </resources>
