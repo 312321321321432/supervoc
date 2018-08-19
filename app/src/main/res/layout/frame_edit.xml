@@ -25,8 +25,8 @@
             android:id="@+id/IEnglish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/I_E"
             android:digits="@string/rule_text"
+            android:hint="@string/I_E"
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,7 +124,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="180dp" />
+        app:layout_constraintGuide_percent="0.3522505" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

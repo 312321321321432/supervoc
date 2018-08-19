@@ -68,7 +68,10 @@ TimerTask task = new TimerTask() {
                 new AlertDialog.Builder(this)
                         .setMessage( "v" + appVersion)
                         .setTitle(R.string.about_app)
-                        .setPositiveButton(R.string.ok, this)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {}
+                        })
                         .show();
                 return true;
         }
@@ -89,7 +92,6 @@ TimerTask task = new TimerTask() {
             try { PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
                 appVersion = info.versionName; //版本名
             } catch (PackageManager.NameNotFoundException e) {
-            // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 //varcode
@@ -257,7 +259,7 @@ TimerTask task = new TimerTask() {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
             if(IEnglish.length() == 0 && IChinese.length() == 0) {
-                Toasty.error(this, "R.string.kidding???", Toast.LENGTH_SHORT, true).show();
+                Toasty.error(this, "R.string.kidding???(easter_egg)", Toast.LENGTH_SHORT, true).show();
                 Ic_v.setError("");
                 Ie_v.setError("");
                 noer += 1;
@@ -344,11 +346,8 @@ TimerTask task = new TimerTask() {
             //}
         }
 
-
-
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-
             //del
             //db.delete(tb_name, "s", null);
             }
