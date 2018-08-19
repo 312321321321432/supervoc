@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         private static Boolean isExit = false;
         private static Boolean hasTask = false;
-
+        int vislist = 0;
 
 
 Timer timerExit = new Timer();
@@ -47,7 +47,6 @@ TimerTask task = new TimerTask() {
      public void run() {
 
         isExit = false;
-
          hasTask = true;
 
     }
@@ -63,7 +62,21 @@ TimerTask task = new TimerTask() {
         private otherFragment fragment3 = new otherFragment();
         private settingsFragment fragment4 = new settingsFragment();
 
-
+@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.default_value:
+                return true;
+            case R.id.information:
+                new AlertDialog.Builder(this)
+                        .setMessage("hi")
+                        .setTitle("hi")
+                        .setPositiveButton("OK", this)
+                        .show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
         @Override
         public void onPageSelected(int position) {
@@ -122,11 +135,9 @@ TimerTask task = new TimerTask() {
                 TextView allC = (TextView) findViewById(R.id.allC);
                 TextView allh = (TextView) findViewById(R.id.allh);
 
-
                 switch (item.getOrder()) {
                     case 0://edit
-
-
+                        vislist =0;
                     case 1://all
 
                         c = db.rawQuery("SELECT * FROM " + tb_name, null);
@@ -147,10 +158,12 @@ TimerTask task = new TimerTask() {
                             allC.setText("---");
                         }
 
+           vislist = 1;
                     case 2://other
 
-
+                       vislist = 2;
                     case 3://settings
+                        vislist = 3;
 
                 }
                 return true;
@@ -167,7 +180,7 @@ TimerTask task = new TimerTask() {
             TextView allh = (TextView) findViewById(R.id.allh);
             switch (position) {
                 case 0://edit
-
+                    vislist = 0;
                 case 1://all
 
                     c = db.rawQuery("SELECT * FROM " + tb_name, null);
@@ -187,12 +200,13 @@ TimerTask task = new TimerTask() {
                     } else {
                         allC.setText("---");
                     }
-
+                    vislist = 1;
                 case 2://other
 
-
+                    vislist = 2;
                 case 3://settings
 
+                    vislist = 3;
             }
         }
 
@@ -207,22 +221,6 @@ TimerTask task = new TimerTask() {
 
         int noer = 0;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id){
-            case R.id.default_value:
-
-            case R.id.information:
-                new AlertDialog.Builder(this)
-                .setMessage("hi")
-                .setTitle("hi")
-                .setPositiveButton("OK", this)
-                .show();
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -247,11 +245,12 @@ TimerTask task = new TimerTask() {
             }
             else if (IEnglish.length() == 0) {
                 Ie_v.setError(getResources().getString(R.string.no_input));
-
+                Ic_v.setError("");
                 noer =+ 1;
             }
             else if(IChinese.length() == 0) {
                 Ic_v.setError(getResources().getString(R.string.no_input));
+                Ie_v.setError("");
                 noer =+ 1;
             }
 
