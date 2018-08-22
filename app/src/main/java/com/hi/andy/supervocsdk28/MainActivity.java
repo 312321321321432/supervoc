@@ -34,13 +34,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import es.dmoral.toasty.Toasty;
-//other = more
+
 
 public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener {
 
         private static Boolean isExit = false;
         private static Boolean hasTask = false;
 
+        String Thline = "標籤";
     String appVersion;
 Timer timerExit = new Timer();
 TimerTask task = new TimerTask() {
@@ -91,7 +92,8 @@ TimerTask task = new TimerTask() {
             setContentView(R.layout.activity_main);
             //vercode
             PackageManager manager = this.getPackageManager();
-            try { PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
+            try {
+                PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
                 appVersion = info.versionName; //版本名
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
@@ -151,9 +153,9 @@ TimerTask task = new TimerTask() {
 
                         c = db.rawQuery("SELECT * FROM " + tb_name, null);
                         if (c.moveToFirst()) {
-                            String E = "English\n";
-                            String C = "Chinese\n";
-                            String h = "hint\n";
+                            String E = getString(R.string.English)+"\n-\n";
+                            String C = getString(R.string.Chinese) +"\n-\n";
+                            String h = Thline +"\n-\n";
                             do {
                                 E += c.getString(0) + "\n";
                                 C += c.getString(1) + "\n";
@@ -164,7 +166,7 @@ TimerTask task = new TimerTask() {
                             allC.setText(C);
                             allh.setText(h);
                         } else {
-                            allC.setText("---");
+                            allC.setText(R.string.there_isn_t_any_voc);
                         }
 
                     case 2://other
@@ -189,9 +191,9 @@ TimerTask task = new TimerTask() {
 
                     c = db.rawQuery("SELECT * FROM " + tb_name, null);
                     if (c.moveToFirst()) {
-                        String E = "English\n";
-                        String C = "Chinese\n";
-                        String h = "hint\n";
+                        String E = getString(R.string.English)+"\n-\n";
+                        String C = getString(R.string.Chinese) +"\n-\n";
+                        String h = Thline +"\n-\n";
                         do {
                             E += c.getString(0) + "\n";
                             C += c.getString(1) + "\n";
@@ -202,7 +204,7 @@ TimerTask task = new TimerTask() {
                         allC.setText(C);
                         allh.setText(h);
                     } else {
-                        allC.setText("---");
+                        allC.setText(getString(R.string.there_isn_t_any_voc));
                     }
                 case 2://other
 
@@ -232,15 +234,28 @@ TimerTask task = new TimerTask() {
         switch (viewPager.getCurrentItem()){
             case 0://edit
                 menu.findItem(R.id.default_value).setVisible(false);
+                menu.findItem(R.id.check_C).setVisible(false);
+                menu.findItem(R.id.check_E).setVisible(false);
+                menu.findItem(R.id.check_h).setVisible(false);
                 break;
             case 1://all
+                menu.findItem(R.id.check_h).setTitle(getString(R.string.show_label, Thline));
                 menu.findItem(R.id.default_value).setVisible(false);
+                menu.findItem(R.id.check_C).setVisible(true);
+                menu.findItem(R.id.check_E).setVisible(true);
+                menu.findItem(R.id.check_h).setVisible(true);
                 break;
             case 2://other
                 menu.findItem(R.id.default_value).setVisible(false);
+                menu.findItem(R.id.check_C).setVisible(false);
+                menu.findItem(R.id.check_E).setVisible(false);
+                menu.findItem(R.id.check_h).setVisible(false);
                 break;
             case 3://settings
                 menu.findItem(R.id.default_value).setVisible(true);
+                menu.findItem(R.id.check_C).setVisible(false);
+                menu.findItem(R.id.check_E).setVisible(false);
+                menu.findItem(R.id.check_h).setVisible(false);
                 break;
         }
         return super.onPrepareOptionsMenu(menu);
@@ -257,7 +272,7 @@ TimerTask task = new TimerTask() {
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
             if(IEnglish.length() == 0 && IChinese.length() == 0) {
-                Toasty.error(this, "R.string.kidding???(easter_egg)", Toast.LENGTH_SHORT, true).show();
+                Toasty.error(this, getString(R.string.kidding), Toast.LENGTH_SHORT, true).show();
                 Ic_v.setError("");
                 Ie_v.setError("");
                 noer += 1;
@@ -275,33 +290,14 @@ TimerTask task = new TimerTask() {
 
             else {
                 if (Ihint.length() == 0) {
+
                     addData(IEnglish.getText().toString(), IChinese.getText().toString(), "-");
-                    Snackbar.make(findViewById(R.id.viewPager), R.string.added_but, Snackbar.LENGTH_SHORT).show();//---
+                    Snackbar.make(findViewById(R.id.viewPager),getString(R.string.added_but, Thline), Snackbar.LENGTH_SHORT).show();//---
                     noer = 0;
                 } else {
                     addData(IEnglish.getText().toString(), IChinese.getText().toString(), Ihint.getText().toString());//toString不知是否要加
                     Snackbar.make(findViewById(R.id.viewPager), R.string.added, Snackbar.LENGTH_SHORT).show();
                     noer = 0;
-                }
-                TextView allE = (TextView) findViewById(R.id.allE);
-                TextView allC = (TextView) findViewById(R.id.allC);
-                TextView allh = (TextView) findViewById(R.id.allh);
-
-                Cursor c=db.rawQuery("SELECT * FROM "+tb_name, null);
-
-                if (c.moveToFirst()) {
-                    String E = "English\n";
-                    String C = "Chinese\n";
-                    String h = "hint\n";
-                    do {
-                        E += c.getString(0) + "\n";
-                        C += c.getString(1) + "\n";
-                        h += c.getString(2) + "\n";
-
-                    } while (c.moveToNext());
-                    allE.setText(E);
-                    allC.setText(C);
-                    allh.setText(h);
                 }
             }
             if (noer == 0) {
@@ -328,7 +324,8 @@ TimerTask task = new TimerTask() {
 
             db.insert(tb_name, null, cv);
 
-            //db.close();
+            db.close();
+            db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
         }
         public void del(View V) {
             //if(delnum.length() == 0){
@@ -390,6 +387,10 @@ TimerTask task = new TimerTask() {
             return false;
  }
 
+ public void change_three(View v){
+        EditText c_three = (EditText) findViewById(R.id.tline_name);
+        Thline = c_three.getText().toString();
+ }
 }
 /*
 尚未做的事：

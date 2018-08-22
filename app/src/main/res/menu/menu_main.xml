@@ -4,14 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
+        android:id="@+id/check_C"
+        android:orderInCategory="0"
+        android:title="@string/show_Chinese"
+        android:checkable="true"
+        android:checked="true"/>
+    <item
+        android:id="@+id/check_E"
+        android:orderInCategory="1"
+        android:title="@string/show_English"
+        android:checkable="true"
+        android:checked="true"/>
+    <item
+        android:id="@+id/check_h"
+        android:orderInCategory="2"
+        android:title="@string/show_label"
+        android:checkable="true"
+        android:checked="true"/>
+    <item
         android:id="@+id/default_value"
         android:title="@string/use_default_value"
-        android:orderInCategory="0"
+        android:orderInCategory="3"
         app:showAsAction="never"/>
     <item
         android:id="@+id/about"
         android:title="@string/about"
         android:visible="true"
-        android:orderInCategory="1"
+        android:orderInCategory="4"
         app:showAsAction="never"/>
 </menu>

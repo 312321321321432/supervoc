@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">超級單字本</string>
     <string name="title_edit">編輯</string>
     <string name="title_all">全部</string>
@@ -6,11 +7,11 @@
     <string name="title_settings">設定</string>
     <string name="added">已增加</string>
     <string name="add">增加</string>
-    <string name="added_but">已增加,但未含標籤,以-取代</string>
-    <string name="no_use">沒有實作</string>
+    <string name="added_but">已增加,但未含%1$s的內容,以-取代</string>
+    <string name="no_use">尚未實作</string>
     <string name="I_E">輸入英文</string>
     <string name="I_C">輸入中文</string>
-    <string name="I_T">輸入標籤</string>
+    <string name="I_T">輸入第3欄內容(選填)</string>
     <string name="add_voc">增加單字</string>
     <string name="del">刪除</string>
     <string name="really">確定？</string>
@@ -22,8 +23,15 @@
     <string name="rule_text">0123456789abcdefghijklmnopqrstuvwxyz
 ABCDEFGHIJKLMNOPQRSTUVWXYZ`!"$^*()=#[]',./?/*-_+&#060;&#062;&#064;&#038;</string>
     <string name="use_default_value">使用預設值</string>
-    <string name="nouse_default_value">此頁面不需使用預設值</string>
     <string name="about_app">關於此程式</string>
     <string name="ok">OK</string>
     <string name="about">關於</string>
+    <string name="show_Chinese">顯示中文</string>
+    <string name="show_English">顯示英文</string>
+    <string name="show_label">顯示%1$s</string>
+    <string name="English">英文</string>
+    <string name="Chinese">中文</string>
+    <string name="line_three_name">第3欄名稱(預設:標籤)</string>
+    <string name="there_isn_t_any_voc">沒有任何單字,去「增加」頁面增加吧！</string>
+    <string name="kidding">你在開玩笑嗎?</string>
 </resources>
