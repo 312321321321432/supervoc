@@ -3,6 +3,7 @@ package com.hi.andy.supervocsdk28;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         private static Boolean isExit = false;
         private static Boolean hasTask = false;
 
-        String Thline = "標籤";
+        String Thline = "";
+
     String appVersion;
 Timer timerExit = new Timer();
 TimerTask task = new TimerTask() {
@@ -90,6 +92,9 @@ TimerTask task = new TimerTask() {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            Thline = getSharedPreferences("third", MODE_PRIVATE)
+                    .getString("third","標籤");
+            
             //vercode
             PackageManager manager = this.getPackageManager();
             try {
@@ -379,7 +384,6 @@ TimerTask task = new TimerTask() {
          } else {
 
               finish(); // 離開程式
-              db.close();
               System.exit(0);
 
          }
@@ -390,6 +394,15 @@ TimerTask task = new TimerTask() {
  public void change_three(View v){
         EditText c_three = (EditText) findViewById(R.id.tline_name);
         Thline = c_three.getText().toString();
+        SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
+        Toasty.success(this, getString(R.string.success), Toast.LENGTH_SHORT, true).show();
+        pref.edit()
+             .putString("third", Thline)
+             .apply();
+     c_three.clearFocus();
+     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+     imm.hideSoftInputFromWindow(c_three.getWindowToken(), 0);
+     c_three.setText("");
  }
 }
 /*

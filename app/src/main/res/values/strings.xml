@@ -11,7 +11,7 @@
     <string name="no_use">尚未實作</string>
     <string name="I_E">輸入英文</string>
     <string name="I_C">輸入中文</string>
-    <string name="I_T">輸入第3欄內容(選填)</string>
+    <string name="I_T">第3欄內容(選填)</string>
     <string name="add_voc">增加單字</string>
     <string name="del">刪除</string>
     <string name="really">確定？</string>
@@ -34,4 +34,5 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ`!"$^*()=#[]',./?/*-_+&#060;&#062;&#064;&#038;</string
     <string name="line_three_name">第3欄名稱(預設:標籤)</string>
     <string name="there_isn_t_any_voc">沒有任何單字,去「增加」頁面增加吧！</string>
     <string name="kidding">你在開玩笑嗎?</string>
+    <string name="success">修改完成</string>
 </resources>

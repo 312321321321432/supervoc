@@ -31,8 +31,7 @@
             android:id="@+id/tline_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/line_three_name"
-            android:text="hint" />
+            android:hint="@string/line_three_name" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
