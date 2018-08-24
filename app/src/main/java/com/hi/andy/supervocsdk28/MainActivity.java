@@ -68,6 +68,12 @@ TimerTask task = new TimerTask() {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.default_value:
+                Thline = "標籤";
+                SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
+                Toasty.success(this, getString(R.string.success), Toast.LENGTH_SHORT, true).show();
+                pref.edit()
+                        .putString("third", Thline)
+                        .apply();
                 return true;
             case R.id.about:
                 new AlertDialog.Builder(this)
