@@ -1,5 +1,6 @@
 package com.hi.andy.supervocsdk28;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         private static Boolean isExit = false;
         private static Boolean hasTask = false;
 
+
         String Thline = "";
 
     String appVersion;
@@ -77,13 +79,44 @@ TimerTask task = new TimerTask() {
                 return true;
             case R.id.about:
                 new AlertDialog.Builder(this)
-                        .setMessage( "v" + appVersion)
+                        .setMessage(getString(R.string.about_text) +"\nv" + appVersion)
                         .setTitle(R.string.about_app)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {}
                         })
                         .show();
+                return true;
+            case R.id.check_C:
+                TextView allC = (TextView) findViewById(R.id.allC);
+                item.setChecked(!item.isChecked());
+                if(item.isChecked()){
+                    allC.setVisibility(TextView.VISIBLE);
+                }
+                else {
+                    allC.setVisibility(TextView.INVISIBLE);
+                }
+
+                return true;
+            case R.id.check_E:
+                TextView allE = (TextView) findViewById(R.id.allE);
+                item.setChecked(!item.isChecked());
+                if(item.isChecked()){
+                    allE.setVisibility(TextView.VISIBLE);
+                }
+                else {
+                    allE.setVisibility(TextView.INVISIBLE);
+                }
+                return true;
+            case R.id.check_h:
+                TextView allh = (TextView) findViewById(R.id.allh);
+                item.setChecked(!item.isChecked());
+                if(item.isChecked()){
+                    allh.setVisibility(TextView.VISIBLE);
+                }
+                else {
+                    allh.setVisibility(TextView.INVISIBLE);
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -164,6 +197,7 @@ TimerTask task = new TimerTask() {
 
                         c = db.rawQuery("SELECT * FROM " + tb_name, null);
                         if (c.moveToFirst()) {
+                            allC.setTextSize(24);
                             String E = getString(R.string.English)+"\n-\n";
                             String C = getString(R.string.Chinese) +"\n-\n";
                             String h = Thline +"\n-\n";
@@ -177,6 +211,7 @@ TimerTask task = new TimerTask() {
                             allC.setText(C);
                             allh.setText(h);
                         } else {
+                            allC.setTextSize(12);
                             allC.setText(R.string.there_isn_t_any_voc);
                         }
 
@@ -202,6 +237,7 @@ TimerTask task = new TimerTask() {
 
                     c = db.rawQuery("SELECT * FROM " + tb_name, null);
                     if (c.moveToFirst()) {
+                        allC.setTextSize(24);
                         String E = getString(R.string.English)+"\n-\n";
                         String C = getString(R.string.Chinese) +"\n-\n";
                         String h = Thline +"\n-\n";
@@ -215,6 +251,7 @@ TimerTask task = new TimerTask() {
                         allC.setText(C);
                         allh.setText(h);
                     } else {
+                        allC.setTextSize(12);
                         allC.setText(getString(R.string.there_isn_t_any_voc));
                     }
                 case 2://other
@@ -250,11 +287,15 @@ TimerTask task = new TimerTask() {
                 menu.findItem(R.id.check_h).setVisible(false);
                 break;
             case 1://all
+
+                TextView allE = (TextView) findViewById(R.id.allE);
                 menu.findItem(R.id.check_h).setTitle(getString(R.string.show_label, Thline));
                 menu.findItem(R.id.default_value).setVisible(false);
-                menu.findItem(R.id.check_C).setVisible(true);
-                menu.findItem(R.id.check_E).setVisible(true);
-                menu.findItem(R.id.check_h).setVisible(true);
+                if(allE.getText() != ""){
+                    menu.findItem(R.id.check_C).setVisible(true);
+                    menu.findItem(R.id.check_E).setVisible(true);
+                    menu.findItem(R.id.check_h).setVisible(true);
+                }
                 break;
             case 2://other
                 menu.findItem(R.id.default_value).setVisible(false);
@@ -272,6 +313,7 @@ TimerTask task = new TimerTask() {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    @SuppressLint("WrongConstant")
     public void add(View V) {
 
             TextInputLayout Ie_v = (TextInputLayout) findViewById(R.id.IE_v);
@@ -306,7 +348,7 @@ TimerTask task = new TimerTask() {
                     Snackbar.make(findViewById(R.id.viewPager),getString(R.string.added_but, Thline), Snackbar.LENGTH_SHORT).show();//---
                     noer = 0;
                 } else {
-                    addData(IEnglish.getText().toString(), IChinese.getText().toString(), Ihint.getText().toString());//toString不知是否要加
+                    addData(IEnglish.getText().toString(), IChinese.getText().toString(), Ihint.getText().toString());//toString不知是否要加//update:because it not imput String is ??
                     Snackbar.make(findViewById(R.id.viewPager), R.string.added, Snackbar.LENGTH_SHORT).show();
                     noer = 0;
                 }
