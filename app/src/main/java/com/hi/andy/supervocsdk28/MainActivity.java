@@ -10,8 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
 
         String Thline = "";
+
 
     String appVersion;
 Timer timerExit = new Timer();
@@ -342,14 +342,22 @@ TimerTask task = new TimerTask() {
             }
 
             else {
+                Toast warm = Toasty.warning(this, getString(R.string.word_10), Toast.LENGTH_SHORT, true);
+                warm.setGravity(Gravity.CENTER, 0, 0);
                 if (Ihint.length() == 0) {
 
                     addData(IEnglish.getText().toString(), IChinese.getText().toString(), "-");
                     Snackbar.make(findViewById(R.id.viewPager),getString(R.string.added_but, Thline), Snackbar.LENGTH_SHORT).show();//---
+                    if(IEnglish.length() > 10 || IChinese.length() > 10 || Ihint.length() > 10){
+                        warm.show();
+                    }
                     noer = 0;
                 } else {
                     addData(IEnglish.getText().toString(), IChinese.getText().toString(), Ihint.getText().toString());//toString不知是否要加//update:because it not imput String is ??
                     Snackbar.make(findViewById(R.id.viewPager), R.string.added, Snackbar.LENGTH_SHORT).show();
+                    if(IEnglish.length() > 10 || IChinese.length() > 10 || Ihint.length() > 10){
+                        warm.show();
+                    }
                     noer = 0;
                 }
             }
