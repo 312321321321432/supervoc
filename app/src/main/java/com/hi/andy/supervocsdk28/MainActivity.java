@@ -72,7 +72,7 @@ TimerTask task = new TimerTask() {
             case R.id.default_value:
                 Thline = "標籤";
                 SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
-                Toasty.success(this, getString(R.string.success), Toast.LENGTH_SHORT, true).show();
+                Toasty.success(this, getString(R.string.back_to_default), Toast.LENGTH_SHORT, true).show();
                 pref.edit()
                         .putString("third", Thline)
                         .apply();
@@ -218,6 +218,8 @@ TimerTask task = new TimerTask() {
                     case 2://other
 
                     case 3://settings
+                        EditText default_3 = (EditText) findViewById(R.id.tline_name);
+                        default_3.setText(Thline);
                 }
                 return true;
             }
@@ -257,6 +259,8 @@ TimerTask task = new TimerTask() {
                 case 2://other
 
                 case 3://settings
+                    EditText default_3 = (EditText) findViewById(R.id.tline_name);
+                    default_3.setText(Thline);
             }
         }
 
@@ -451,14 +455,13 @@ TimerTask task = new TimerTask() {
         EditText c_three = (EditText) findViewById(R.id.tline_name);
         Thline = c_three.getText().toString();
         SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
-        Toasty.success(this, getString(R.string.success), Toast.LENGTH_SHORT, true).show();
+        Toasty.success(this, getString(R.string.success, Thline), Toast.LENGTH_SHORT, true).show();
         pref.edit()
              .putString("third", Thline)
              .apply();
      c_three.clearFocus();
      InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
      imm.hideSoftInputFromWindow(c_three.getWindowToken(), 0);
-     c_three.setText("");
  }
 }
 /*
