@@ -122,10 +122,17 @@ TimerTask task = new TimerTask() {
         return super.onOptionsItemSelected(item);
     }
 
-        @Override
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
         public void onPageSelected(int position) {
             //页面滑动的时候，改变BottomNavigationView的Item高亮
             navigation.getMenu().getItem(position).setChecked(true);
+            change_frag(position);
+
         }
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +140,6 @@ TimerTask task = new TimerTask() {
             setContentView(R.layout.activity_main);
             Thline = getSharedPreferences("third", MODE_PRIVATE)
                     .getString("third","標籤");
-            
             //vercode
             PackageManager manager = this.getPackageManager();
             try {
@@ -178,94 +184,57 @@ TimerTask task = new TimerTask() {
             });
             //
         }
+
         private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
                 = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //点击BottomNavigationView的Item项，切换ViewPager页面
-                //menu/navigation.xml里加的android:orderInCategory属性就是下面item.getOrder()取的值
+                change_frag(item.getOrder());
                 viewPager.setCurrentItem(item.getOrder());
-                TextView allE = (TextView) findViewById(R.id.allE);
-                TextView allC = (TextView) findViewById(R.id.allC);
-                TextView allh = (TextView) findViewById(R.id.allh);
-
-                switch (item.getOrder()) {
-                    case 0://edit
-
-                    case 1://all
-
-                        c = db.rawQuery("SELECT * FROM " + tb_name, null);
-                        if (c.moveToFirst()) {
-                            allC.setTextSize(24);
-                            String E = getString(R.string.English)+"\n-\n";
-                            String C = getString(R.string.Chinese) +"\n-\n";
-                            String h = Thline +"\n-\n";
-                            do {
-                                E += c.getString(0) + "\n";
-                                C += c.getString(1) + "\n";
-                                h += c.getString(2) + "\n";
-
-                            } while (c.moveToNext());
-                            allE.setText(E);
-                            allC.setText(C);
-                            allh.setText(h);
-                        } else {
-                            allC.setTextSize(12);
-                            allC.setText(R.string.there_isn_t_any_voc);
-                        }
-
-                    case 2://other
-
-                    case 3://settings
-                        EditText default_3 = (EditText) findViewById(R.id.tline_name);
-                        default_3.setText(Thline);
-                }
                 return true;
             }
         };
 
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
 
-            TextView allE = (TextView) findViewById(R.id.allE);
-            TextView allC = (TextView) findViewById(R.id.allC);
-            TextView allh = (TextView) findViewById(R.id.allh);
-            switch (position) {
-                case 0://edit
 
-                case 1://all
+private void change_frag(int num){
+    TextView allE = (TextView) findViewById(R.id.allE);
+    TextView allC = (TextView) findViewById(R.id.allC);
+    TextView allh = (TextView) findViewById(R.id.allh);
+    switch (num) {
+        case 0://edit
 
-                    c = db.rawQuery("SELECT * FROM " + tb_name, null);
-                    if (c.moveToFirst()) {
-                        allC.setTextSize(24);
-                        String E = getString(R.string.English)+"\n-\n";
-                        String C = getString(R.string.Chinese) +"\n-\n";
-                        String h = Thline +"\n-\n";
-                        do {
-                            E += c.getString(0) + "\n";
-                            C += c.getString(1) + "\n";
-                            h += c.getString(2) + "\n";
+        case 1://all
 
-                        } while (c.moveToNext());
-                        allE.setText(E);
-                        allC.setText(C);
-                        allh.setText(h);
-                    } else {
-                        allC.setTextSize(12);
-                        allC.setText(getString(R.string.there_isn_t_any_voc));
-                    }
-                case 2://other
+            c = db.rawQuery("SELECT * FROM " + tb_name, null);
+            if (c.moveToFirst()) {
+                allC.setTextSize(24);
+                String E = getString(R.string.English)+"\n-\n";
+                String C = getString(R.string.Chinese) +"\n-\n";
+                String h = Thline +"\n-\n";
+                do {
+                    E += c.getString(0) + "\n";
+                    C += c.getString(1) + "\n";
+                    h += c.getString(2) + "\n";
 
-                case 3://settings
-                    EditText default_3 = (EditText) findViewById(R.id.tline_name);
-                    default_3.setText(Thline);
+                } while (c.moveToNext());
+                allE.setText(E);
+                allC.setText(C);
+                allh.setText(h);
+            } else {
+                allC.setTextSize(12);
+                allC.setText(getString(R.string.there_isn_t_any_voc));
             }
-        }
+        case 2://other
 
-
-
+        case 3://settings
+            EditText default3 = (EditText) findViewById(R.id.tline_name);
+            //default3.setText("LET ME RUN");
+    }
+}
 
 
         @Override
@@ -273,7 +242,7 @@ TimerTask task = new TimerTask() {
 
         }
 
-        int noer = 0;
+    int noer = 0;
 
 
     @Override
