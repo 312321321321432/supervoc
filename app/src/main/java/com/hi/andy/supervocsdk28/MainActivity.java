@@ -55,7 +55,7 @@ TimerTask task = new TimerTask() {
         hasTask = true;
     }
 };
-        static final String db_name = "VOC";
+    static final String db_name = "VOC";
         static final String tb_name = "VOC";
         SQLiteDatabase db;
         Cursor c;
@@ -127,13 +127,6 @@ TimerTask task = new TimerTask() {
 
     }
 
-    @Override
-        public void onPageSelected(int position) {
-            //页面滑动的时候，改变BottomNavigationView的Item高亮
-            navigation.getMenu().getItem(position).setChecked(true);
-            change_frag(position);
-
-        }
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -185,6 +178,21 @@ TimerTask task = new TimerTask() {
             //
         }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EditText default3 =(EditText)findViewById(R.id.tline_name);
+        //default3.setText("LET ME RUN");
+
+    }
+
+
+    public void onPageSelected(int position) {
+        //页面滑动的时候，改变BottomNavigationView的Item高亮
+        navigation.getMenu().getItem(position).setChecked(true);
+        change_frag(position);
+
+    }
         private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
                 = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -231,8 +239,6 @@ private void change_frag(int num){
         case 2://other
 
         case 3://settings
-            EditText default3 = (EditText) findViewById(R.id.tline_name);
-            //default3.setText("LET ME RUN");
     }
 }
 
