@@ -178,13 +178,7 @@ TimerTask task = new TimerTask() {
             //
         }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EditText default3 =(EditText)findViewById(R.id.tline_name);
-        //default3.setText("LET ME RUN");
 
-    }
 
 
     public void onPageSelected(int position) {
@@ -199,7 +193,7 @@ TimerTask task = new TimerTask() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //点击BottomNavigationView的Item项，切换ViewPager页面
-                change_frag(item.getOrder());
+                //change_frag(item.getOrder());
                 viewPager.setCurrentItem(item.getOrder());
                 return true;
             }
@@ -214,7 +208,7 @@ private void change_frag(int num){
     TextView allh = (TextView) findViewById(R.id.allh);
     switch (num) {
         case 0://edit
-
+break;
         case 1://all
 
             c = db.rawQuery("SELECT * FROM " + tb_name, null);
@@ -236,9 +230,13 @@ private void change_frag(int num){
                 allC.setTextSize(12);
                 allC.setText(getString(R.string.there_isn_t_any_voc));
             }
+            break;
         case 2://other
-
+break;
         case 3://settings
+            EditText default3 =(EditText)findViewById(R.id.tline_name);
+            default3.setText(Thline);
+            break;
     }
 }
 
