@@ -7,7 +7,6 @@
     <string name="title_settings">設定</string>
     <string name="added">已增加</string>
     <string name="add">增加</string>
-    <string name="added_but">已增加,但未含%1$s的內容,以-取代</string>
     <string name="no_use">尚未實作</string>
     <string name="I_E">輸入英文</string>
     <string name="I_C">輸入中文</string>
@@ -38,4 +37,6 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ`!"$^*()=#[]',./?/*-_+&#060;&#062;&#064;&#038;</string
     <string name="about_text">製作者:吳安仁\n</string>
     <string name="word_10">注意：字元大於10有可能重疊</string>
     <string name="back_to_default">返回預設值</string>
+    <string name="on_a_save_text">自動儲存(注意：關閉此選項可能不會儲存您的單字)</string>
+    <string name="off_a_save_text">自動儲存(注意：開啟此選項可能造成硬體一定的消耗損壞)</string>
 </resources>

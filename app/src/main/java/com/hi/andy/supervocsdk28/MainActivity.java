@@ -16,8 +16,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,15 +40,14 @@ import androidx.viewpager.widget.ViewPager;
 import es.dmoral.toasty.Toasty;
 
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
         private static Boolean isExit = false;
         private static Boolean hasTask = false;
 
 
         String Thline = "";
-
-
+        int autosave = 1;
     String appVersion;
 Timer timerExit = new Timer();
 TimerTask task = new TimerTask() {
@@ -53,7 +55,8 @@ TimerTask task = new TimerTask() {
      public void run() {
         isExit = false;
         hasTask = true;
-    }
+
+     }
 };
     static final String db_name = "VOC";
         static final String tb_name = "VOC";
@@ -71,7 +74,11 @@ TimerTask task = new TimerTask() {
         switch (item.getItemId()){
             case R.id.default_value:
                 Thline = "標籤";
+                autosave = 1;
                 SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
+                SharedPreferences auto = getSharedPreferences("a_s", MODE_PRIVATE);
+                Switch sw_save = (Switch) findViewById(R.id.enale_asave);
+                sw_save.setChecked(true);
                 Toasty.success(this, getString(R.string.back_to_default), Toast.LENGTH_SHORT, true).show();
                 pref.edit()
                         .putString("third", Thline)
@@ -180,7 +187,6 @@ TimerTask task = new TimerTask() {
 
 
 
-
     public void onPageSelected(int position) {
         //页面滑动的时候，改变BottomNavigationView的Item高亮
         navigation.getMenu().getItem(position).setChecked(true);
@@ -214,9 +220,9 @@ break;
             c = db.rawQuery("SELECT * FROM " + tb_name, null);
             if (c.moveToFirst()) {
                 allC.setTextSize(24);
-                String E = getString(R.string.English)+"\n-\n";
-                String C = getString(R.string.Chinese) +"\n-\n";
-                String h = Thline +"\n-\n";
+                String E = getString(R.string.English)+"\n\n";
+                String C = getString(R.string.Chinese) +"\n\n";
+                String h = Thline +"\n\n";
                 do {
                     E += c.getString(0) + "\n";
                     C += c.getString(1) + "\n";
@@ -236,6 +242,20 @@ break;
         case 3://settings
             EditText default3 =(EditText)findViewById(R.id.tline_name);
             default3.setText(Thline);
+            Switch sw_save = (Switch) findViewById(R.id.enale_asave);
+            sw_save.setOnCheckedChangeListener(this);
+
+            autosave = getSharedPreferences("a_s", MODE_PRIVATE).getInt("a_s",1);
+            switch (autosave){
+                case 0:
+                    sw_save.setChecked(false);
+                    sw_save.setText(R.string.off_a_save_text);
+                    break;
+                case 1:
+                    sw_save.setChecked(true);
+                    sw_save.setText(R.string.on_a_save_text);
+                    break;
+            }
             break;
     }
 }
@@ -322,21 +342,15 @@ break;
                 Toast warm = Toasty.warning(this, getString(R.string.word_10), Toast.LENGTH_SHORT, true);
                 warm.setGravity(Gravity.CENTER, 0, 0);
                 if (Ihint.length() == 0) {
-
                     addData(IEnglish.getText().toString(), IChinese.getText().toString(), "-");
-                    Snackbar.make(findViewById(R.id.viewPager),getString(R.string.added_but, Thline), Snackbar.LENGTH_SHORT).show();//---
-                    if(IEnglish.length() > 10 || IChinese.length() > 10 || Ihint.length() > 10){
-                        warm.show();
-                    }
-                    noer = 0;
                 } else {
                     addData(IEnglish.getText().toString(), IChinese.getText().toString(), Ihint.getText().toString());//toString不知是否要加//update:because it not imput String is ??
-                    Snackbar.make(findViewById(R.id.viewPager), R.string.added, Snackbar.LENGTH_SHORT).show();
-                    if(IEnglish.length() > 10 || IChinese.length() > 10 || Ihint.length() > 10){
-                        warm.show();
-                    }
-                    noer = 0;
                 }
+                Snackbar.make(findViewById(R.id.viewPager),R.string.added, Snackbar.LENGTH_SHORT).show();
+                if(IEnglish.length() > 10 || IChinese.length() > 10 || Ihint.length() > 10){
+                    warm.show();
+                }
+                noer = 0;
             }
             if (noer == 0) {
                 Ie_v.setError("");
@@ -354,16 +368,17 @@ break;
 
         private void addData(String ENG, String CHN, String hint) {
 
+            if (autosave == 1) {
+                ContentValues cv = new ContentValues(3);
+                cv.put("eng", ENG);
+                cv.put("chn", CHN);
+                cv.put("hint", hint);
 
-            ContentValues cv = new ContentValues(3);
-            cv.put("eng", ENG);
-            cv.put("chn", CHN);
-            cv.put("hint", hint);
+                db.insert(tb_name, null, cv);
 
-            db.insert(tb_name, null, cv);
-
-            db.close();
-            db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
+                db.close();
+                db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
+            }
         }
         public void del(View V) {
             //if(delnum.length() == 0){
@@ -426,16 +441,42 @@ break;
 
  public void change_three(View v){
         EditText c_three = (EditText) findViewById(R.id.tline_name);
-        Thline = c_three.getText().toString();
         SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
-        Toasty.success(this, getString(R.string.success, Thline), Toast.LENGTH_SHORT, true).show();
+    if(c_three.length() == 0) {
+        Toasty.error(this, getString(R.string.no_input), Toast.LENGTH_SHORT, true).show();
+        }
+        else {
+        Thline = c_three.getText().toString();
         pref.edit()
-             .putString("third", Thline)
-             .apply();
-     c_three.clearFocus();
-     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-     imm.hideSoftInputFromWindow(c_three.getWindowToken(), 0);
+                .putString("third", Thline)
+                .apply();
+        c_three.clearFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(c_three.getWindowToken(), 0);
+        pref.edit()
+                .putString("third", Thline)
+                .apply();
+        Toasty.success(this, getString(R.string.success, Thline), Toast.LENGTH_SHORT, true).show();
+    }
  }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        SharedPreferences auto = getSharedPreferences("a_s", MODE_PRIVATE);
+        Switch sw_save = (Switch) findViewById(R.id.enale_asave);
+
+        if (buttonView.isChecked()){
+            autosave = 1;//0=off,1=on
+            sw_save.setText(R.string.on_a_save_text);
+        }
+        else {
+            autosave = 0;
+            sw_save.setText(R.string.off_a_save_text);
+        }
+        auto.edit()
+                .putInt("a_s", autosave)
+                .apply();
+    }
 }
 /*
 尚未做的事：
