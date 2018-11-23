@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -40,17 +41,17 @@ import androidx.viewpager.widget.ViewPager;
 import es.dmoral.toasty.Toasty;
 
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener, CompoundButton.OnCheckedChangeListener{
 
         private static Boolean isExit = false;
         private static Boolean hasTask = false;
 
 
         String Thline = "";
-        int autosave = 1;
-    String appVersion;
-Timer timerExit = new Timer();
-TimerTask task = new TimerTask() {
+        int autosave =1;
+        String appVersion;
+        Timer timerExit = new Timer();
+        TimerTask task = new TimerTask() {
      @Override
      public void run() {
         isExit = false;
@@ -153,6 +154,7 @@ TimerTask task = new TimerTask() {
             db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
             String createTable = "CREATE TABLE IF NOT EXISTS " + tb_name + "(eng VARCHAR(64)," + "chn VARCHAR(32)," + "hint VARCHAR(16))";
             db.execSQL(createTable);
+            c = db.rawQuery("SELECT * FROM " + tb_name, null);
 
 
             //db
@@ -235,6 +237,8 @@ break;
             } else {
                 allC.setTextSize(12);
                 allC.setText(getString(R.string.there_isn_t_any_voc));
+                allE.setText("");
+                allh.setText("");
             }
             break;
         case 2://other
@@ -310,6 +314,7 @@ break;
         return super.onPrepareOptionsMenu(menu);
     }
 
+
     @SuppressLint("WrongConstant")
     public void add(View V) {
 
@@ -381,23 +386,27 @@ break;
             }
         }
         public void del(View V) {
-            //if(delnum.length() == 0){
+            EditText delete_input = (EditText) findViewById(R.id.delete_input);
+        if(delete_input.length() == 0){
                 Toast.makeText(this, R.string.no_use, Toast.LENGTH_SHORT).show();
-            //}
-            //else{
-                //new AlertDialog.Builder(this)
-                        //.setMessage("del '" + delnum.getText().toString() + "' ?")
-                        //.setTitle(R.string.really)
-                        //.setPositiveButton(R.string.sure, this)
-                        //.setNegativeButton(R.string.cancel, null)
-                        //.show();
-            //}
+            }
+            else{
+                new AlertDialog.Builder(this)
+                        .setMessage("del '" + delete_input.getText().toString() + "' ?")
+                        .setTitle(R.string.really)
+                        .setPositiveButton(R.string.sure, this)
+                        .setNegativeButton(R.string.cancel, null)
+                        .show();
+            }
         }
 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
+            EditText delete_input = (EditText) findViewById(R.id.delete_input);
+            db.delete(tb_name, "eng" + "=?", new String[]{String.valueOf(delete_input.getText().toString())});
+            c = db.rawQuery("SELECT * FROM " + tb_name, null);
+            delete_input.setText("");
             //del
-            //db.delete(tb_name, "s", null);
             }
 
         @Override
@@ -477,6 +486,7 @@ break;
                 .putInt("a_s", autosave)
                 .apply();
     }
+
 }
 /*
 尚未做的事：
