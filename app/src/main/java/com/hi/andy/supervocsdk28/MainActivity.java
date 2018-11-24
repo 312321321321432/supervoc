@@ -41,14 +41,13 @@ import androidx.viewpager.widget.ViewPager;
 import es.dmoral.toasty.Toasty;
 
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener, CompoundButton.OnCheckedChangeListener{
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener, AdapterView.OnItemSelectedListener, DialogInterface.OnClickListener{
 
         private static Boolean isExit = false;
         private static Boolean hasTask = false;
 
 
         String Thline = "";
-        int autosave =1;
         String appVersion;
         Timer timerExit = new Timer();
         TimerTask task = new TimerTask() {
@@ -75,11 +74,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         switch (item.getItemId()){
             case R.id.default_value:
                 Thline = "標籤";
-                autosave = 1;
                 SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
-                SharedPreferences auto = getSharedPreferences("a_s", MODE_PRIVATE);
-                Switch sw_save = (Switch) findViewById(R.id.enale_asave);
-                sw_save.setChecked(true);
                 Toasty.success(this, getString(R.string.back_to_default), Toast.LENGTH_SHORT, true).show();
                 pref.edit()
                         .putString("third", Thline)
@@ -141,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             setContentView(R.layout.activity_main);
             Thline = getSharedPreferences("third", MODE_PRIVATE)
                     .getString("third","標籤");
-            //vercode
+            //ver
             PackageManager manager = this.getPackageManager();
             try {
                 PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
@@ -149,17 +144,14 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-//varcode
+            //ver
             //db
             db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
             String createTable = "CREATE TABLE IF NOT EXISTS " + tb_name + "(eng VARCHAR(64)," + "chn VARCHAR(32)," + "hint VARCHAR(16))";
             db.execSQL(createTable);
             c = db.rawQuery("SELECT * FROM " + tb_name, null);
-
-
             //db
             viewPager = (ViewPager) findViewById(R.id.viewPager);
-            //添加viewPager事件监听（很容易忘）
             viewPager.addOnPageChangeListener(this);
             navigation = (BottomNavigationView) findViewById(R.id.navigation);
             navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -246,20 +238,6 @@ break;
         case 3://settings
             EditText default3 =(EditText)findViewById(R.id.tline_name);
             default3.setText(Thline);
-            Switch sw_save = (Switch) findViewById(R.id.enale_asave);
-            sw_save.setOnCheckedChangeListener(this);
-
-            autosave = getSharedPreferences("a_s", MODE_PRIVATE).getInt("a_s",1);
-            switch (autosave){
-                case 0:
-                    sw_save.setChecked(false);
-                    sw_save.setText(R.string.off_a_save_text);
-                    break;
-                case 1:
-                    sw_save.setChecked(true);
-                    sw_save.setText(R.string.on_a_save_text);
-                    break;
-            }
             break;
     }
 }
@@ -373,7 +351,6 @@ break;
 
         private void addData(String ENG, String CHN, String hint) {
 
-            if (autosave == 1) {
                 ContentValues cv = new ContentValues(3);
                 cv.put("eng", ENG);
                 cv.put("chn", CHN);
@@ -383,7 +360,6 @@ break;
 
                 db.close();
                 db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
-            }
         }
         public void del(View V) {
             EditText delete_input = (EditText) findViewById(R.id.delete_input);
@@ -469,23 +445,6 @@ break;
     }
  }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        SharedPreferences auto = getSharedPreferences("a_s", MODE_PRIVATE);
-        Switch sw_save = (Switch) findViewById(R.id.enale_asave);
-
-        if (buttonView.isChecked()){
-            autosave = 1;//0=off,1=on
-            sw_save.setText(R.string.on_a_save_text);
-        }
-        else {
-            autosave = 0;
-            sw_save.setText(R.string.off_a_save_text);
-        }
-        auto.edit()
-                .putInt("a_s", autosave)
-                .apply();
-    }
 
 }
 /*
