@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         String Thline = "";
         String appVersion;
+        int vocs = 0;
+        String E;
+    String C;
+    String h;
+
         Timer timerExit = new Timer();
         TimerTask task = new TimerTask() {
      @Override
@@ -134,6 +139,19 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            c = db.rawQuery("SELECT * FROM " + tb_name, null);
+            if (c.moveToFirst()) {
+                //textsize 24
+                vocs += 1;
+                E = getString(R.string.English)+"\n\n";
+                C = getString(R.string.Chinese) +"\n\n";
+                h = Thline +"\n\n";
+                do {
+                    E += c.getString(0) + "\n";
+                    C += c.getString(1) + "\n";
+                    h += c.getString(2) + "\n";
+
+                } while (c.moveToNext());}
             Thline = getSharedPreferences("third", MODE_PRIVATE)
                     .getString("third","標籤");
             //ver
@@ -211,7 +229,7 @@ private void change_frag(int num){
 break;
         case 1://all
 
-            c = db.rawQuery("SELECT * FROM " + tb_name, null);
+            /*c = db.rawQuery("SELECT * FROM " + tb_name, null);
             if (c.moveToFirst()) {
                 allC.setTextSize(24);
                 String E = getString(R.string.English)+"\n\n";
@@ -226,12 +244,17 @@ break;
                 allE.setText(E);
                 allC.setText(C);
                 allh.setText(h);
-            } else {
+            }*/if(vocs == 0) {
                 allC.setTextSize(12);
                 allC.setText(getString(R.string.there_isn_t_any_voc));
                 allE.setText("");
                 allh.setText("");
-            }
+            } else{
+            allC.setTextSize(24);
+            allC.setText(C);
+            allE.setText(E);
+            allh.setText(h);
+        }
             break;
         case 2://other
 break;
@@ -452,7 +475,6 @@ break;
 * 編輯
 *1 優化(ListView)
 *2 刪除
-*3 Material Design
 *3 如果已經加過了,不給加(int,String.indexOf(""),感謝 JJ Wang)
 *
 * 全部
