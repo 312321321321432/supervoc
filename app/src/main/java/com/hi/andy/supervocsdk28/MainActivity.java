@@ -139,19 +139,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-            c = db.rawQuery("SELECT * FROM " + tb_name, null);
-            if (c.moveToFirst()) {
-                //textsize 24
-                vocs += 1;
-                E = getString(R.string.English)+"\n\n";
-                C = getString(R.string.Chinese) +"\n\n";
-                h = Thline +"\n\n";
-                do {
-                    E += c.getString(0) + "\n";
-                    C += c.getString(1) + "\n";
-                    h += c.getString(2) + "\n";
-
-                } while (c.moveToNext());}
             Thline = getSharedPreferences("third", MODE_PRIVATE)
                     .getString("third","標籤");
             //ver
@@ -167,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
             String createTable = "CREATE TABLE IF NOT EXISTS " + tb_name + "(eng VARCHAR(64)," + "chn VARCHAR(32)," + "hint VARCHAR(16))";
             db.execSQL(createTable);
-            c = db.rawQuery("SELECT * FROM " + tb_name, null);
+            requary();
             //db
             viewPager = (ViewPager) findViewById(R.id.viewPager);
             viewPager.addOnPageChangeListener(this);
@@ -228,23 +215,7 @@ private void change_frag(int num){
         case 0://edit
 break;
         case 1://all
-
-            /*c = db.rawQuery("SELECT * FROM " + tb_name, null);
-            if (c.moveToFirst()) {
-                allC.setTextSize(24);
-                String E = getString(R.string.English)+"\n\n";
-                String C = getString(R.string.Chinese) +"\n\n";
-                String h = Thline +"\n\n";
-                do {
-                    E += c.getString(0) + "\n";
-                    C += c.getString(1) + "\n";
-                    h += c.getString(2) + "\n";
-
-                } while (c.moveToNext());
-                allE.setText(E);
-                allC.setText(C);
-                allh.setText(h);
-            }*/if(vocs == 0) {
+           if(vocs == 0) {
                 allC.setTextSize(12);
                 allC.setText(getString(R.string.there_isn_t_any_voc));
                 allE.setText("");
@@ -257,7 +228,9 @@ break;
         }
             break;
         case 2://other
-break;
+            TextView voc_num = (TextView) findViewById(R.id.voc);
+            voc_num.setText("number of voc:" + String.valueOf(vocs));
+            break;
         case 3://settings
             EditText default3 =(EditText)findViewById(R.id.tline_name);
             default3.setText(Thline);
@@ -350,12 +323,13 @@ break;
                 if (Ihint.length() == 0) {
                     addData(IEnglish.getText().toString(), IChinese.getText().toString(), "-");
                 } else {
-                    addData(IEnglish.getText().toString(), IChinese.getText().toString(), Ihint.getText().toString());//toString不知是否要加//update:because it not imput String is ??
+                    addData(IEnglish.getText().toString(), IChinese.getText().toString(), Ihint.getText().toString());//toString不知是否要加//update:because it not imput String is bolleon
                 }
                 Snackbar.make(findViewById(R.id.viewPager),R.string.added, Snackbar.LENGTH_SHORT).show();
                 if(IEnglish.length() > 10 || IChinese.length() > 10 || Ihint.length() > 10){
                     warm.show();
                 }
+                requary();
                 noer = 0;
             }
             if (noer == 0) {
@@ -403,11 +377,29 @@ break;
         public void onClick(DialogInterface dialogInterface, int i) {
             EditText delete_input = (EditText) findViewById(R.id.delete_input);
             db.delete(tb_name, "eng" + "=?", new String[]{String.valueOf(delete_input.getText().toString())});
-            c = db.rawQuery("SELECT * FROM " + tb_name, null);
             delete_input.setText("");
+            requary();
             //del
             }
 
+            private void requary() {
+                c = db.rawQuery("SELECT * FROM " + tb_name, null);
+                vocs = 0;
+                if (c.moveToFirst()) {
+                    //textsize 24
+                    vocs += 1;
+                    E = getString(R.string.English)+"\n\n";
+                    C = getString(R.string.Chinese) +"\n\n";
+                    h = Thline +"\n\n";
+                    do {
+                        E += c.getString(0) + "\n";
+                        C += c.getString(1) + "\n";
+                        h += c.getString(2) + "\n";
+
+                    } while (c.moveToNext());}
+
+
+    }
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
