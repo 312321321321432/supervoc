@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.default_value:
+                EditText c_three = (EditText) findViewById(R.id.tline_name);
+                c_three.setText("標籤");
                 Thline = "標籤";
                 SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
                 Toasty.success(this, getString(R.string.back_to_default), Toast.LENGTH_SHORT, true).show();
