@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         switch (item.getItemId()){
             case R.id.default_value:
                 EditText c_three = (EditText) findViewById(R.id.tline_name);
-                c_three.setText("標籤");
-                Thline = "標籤";
+                c_three.setText(R.string.third_preset_text);
+                Thline = getString(R.string.third_preset_text);
                 SharedPreferences pref = getSharedPreferences("third", MODE_PRIVATE);
                 Toasty.success(this, getString(R.string.back_to_default), Toast.LENGTH_SHORT, true).show();
                 pref.edit()
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             Thline = getSharedPreferences("third", MODE_PRIVATE)
-                    .getString("third","標籤");
+                    .getString("third",getString(R.string.third_preset_text));
             //ver
             PackageManager manager = this.getPackageManager();
             try {
