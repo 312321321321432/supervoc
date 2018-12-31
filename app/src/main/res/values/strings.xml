@@ -1,6 +1,7 @@
 <resources>
 
     <string name="app_name">超級單字本</string>
+    <string name="third_preset_text">標籤</string>
     <string name="title_edit">編輯</string>
     <string name="title_all">全部</string>
     <string name="title_other">更多</string>
