@@ -6,8 +6,8 @@ android {
         applicationId "com.hi.andy.supervocsdk28"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 1
-        versionName "0.05"
+        versionCode 0
+        versionName "0.06"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
