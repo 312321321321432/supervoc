@@ -1,7 +1,9 @@
+## Description
+[![prwelcome.badge]]
 一名國中生的程式:"超級單字本"
 "使用 android studio 3.0 release "
 
----ENG her.---
+---ENG ver.---
 An application written by A junior high school student.
 Uses android studio 3.0
 
