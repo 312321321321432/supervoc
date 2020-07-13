@@ -6,7 +6,7 @@
 An application written by A junior high school student.
 Uses android studio 3.0.
 
-## Download
+## Download & Build
 
 use `git clone https://github.com/Andy312432/supervoc/ `
 and build it in Android Studio.
